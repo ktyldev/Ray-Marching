@@ -4,6 +4,7 @@
 public class FractalMaster : MonoBehaviour {
 
     public ComputeShader fractalShader;
+    public Transform fractalPosition;
 
     [Range (1, 20)]
     public float fractalPower = 10;
@@ -61,7 +62,9 @@ public class FractalMaster : MonoBehaviour {
         fractalShader.SetVector ("colourAMix", new Vector3 (redA, greenA, blueA));
         fractalShader.SetVector ("colourBMix", new Vector3 (redB, greenB, blueB));
 
-        fractalShader.SetMatrix ("_CameraToWorld", cam.cameraToWorldMatrix);
+        // Camera to world matrix
+        
+        fractalShader.SetMatrix ("_CameraToWorld", Matrix4x4.Inverse(fractalPosition.localToWorldMatrix) * cam.cameraToWorldMatrix);
         fractalShader.SetMatrix ("_CameraInverseProjection", cam.projectionMatrix.inverse);
         fractalShader.SetVector ("_LightDirection", directionalLight.transform.forward);
 
